@@ -8,17 +8,17 @@ client= get_chroma_client();
 collection=client.get_collection(name="University_IOOP_Sections")
 model=get_llm_client()
 
-query='Societies in university'
+query='What percentage refund is given if a student withdraws between 8th to 15th day?'
 embedding=embed_sections([query])
 
 
-results=collection.query(query_embeddings=embedding, n_results=2);
-print(results)
+results=collection.query(query_embeddings=embedding, n_results=4);
 
-system_message=SystemMessage(content="You are a helpful assistant that helps students to Know and Give relevent Answer to the question from this text: {results}.Be sure not to answer out of scope of the this")
+
+system_message=SystemMessage(content=f"You are a helpful assistant that helps students to Know and Give relevent Answer to the question from this text: {results}.Be sure not to answer out of scope of the this")
 messages=[
     system_message,
-    HumanMessage("Based on the above text, answer the question: {query}.in simple and Short manner")
+    HumanMessage(query)
 ]
 
 response=model.invoke(messages);
