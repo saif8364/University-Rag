@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+    <input type="text">
+    <button onclick="sendQuery()">Retrieve</button>
+    </div> 
+</body>
+<script>
+    let data;
+    let parent=document.getElementsByTagName('div')
+    async function sendQuery(){
+        console.log("Button clicked");
+        
+            
+        input=document.querySelector("input");
+            query=input.value;
+            try {
+                 response=await fetch("http://localhost:8000/query",{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({query:query})
+            })
+            data=await response.json();
+            console.log("Response from server:", data.answer);
+            } catch (error) {
+                console.log("Error sending request:", error);
+            }
+    }
+  if(data){
+para=document.createElement('p');
+para.textContent=data.answer;
+parent.appendChild(para);
+  }
+    
+</script>
+</html>
